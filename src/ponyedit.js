@@ -118,7 +118,7 @@
             checkTextHighlighting.call(self, e);
         });
         document[addEventListener]('mouseup', function(e) {
-            setTimeout( function() {
+            setTimeout(function() {
                 checkTextHighlighting.call(self, e);
             });
         });
@@ -259,11 +259,11 @@
         exec('justify' + value, false, null);
     };
 
-    function command (action, args) {
-        return function () {
+    function command (action) {
+        return function (preserveSelection) {
             var self = this;
             var args = Array.prototype.slice.call(arguments);
-            self.restoreSelection(true);
+            self.restoreSelection(!preserveSelection);
             self['exec' + action].apply(self, args);
             self['report' + action]();
         };
