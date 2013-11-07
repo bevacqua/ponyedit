@@ -27,8 +27,11 @@
             wildcard: true // support wildcard listeners
         });
 
+        self.state = { active: false };
         self.content = element;
         self.options = options || {};
+        self.on('report.*', stateChange.bind(self));
+
         bindElements.call(self);
         buildPastebin.call(self);
         createEventBindings.call(self);
@@ -39,6 +42,19 @@
     // extends EventEmitter2
     Editor.prototype = Object.create(ee.prototype);
     Editor.prototype.constructor = Editor;
+
+    function stateChange (value, prop) {
+        var self = this;
+        var key;
+
+        if (prop === 'active' && value === false) {
+            for (key in self.state) {
+                delete self.state[prop];
+            }
+        }
+
+        self.state[prop] = value;
+    }
 
     function bindElements () {
         var self = this;
@@ -149,7 +165,7 @@
         wasCollapsed = selection.isCollapsed;
 
         // report whether a selection exists
-        self.emit('report.active', !wasCollapsed);
+        self.emit('report.active', !wasCollapsed, 'active');
     }
 
     function findNodes (content, element) {
@@ -270,18 +286,20 @@
         exec('justify' + value, false, null);
     };
 
-    function command (action) {
+    function command (action, prop) {
         return function (args, preserveSelection) {
             var self = this;
             self.restoreSelection(!preserveSelection);
             self['exec' + action].apply(self, args || []);
-            self['report' + action]();
+            self['report' + (prop || action)] ();
         };
     }
 
     Editor.prototype.setBold = command('Bold');
     Editor.prototype.setItalic = command('Italic');
     Editor.prototype.setSize = command('Size');
+    Editor.prototype.decreaseSize = command('SizeDecrease', 'Size');
+    Editor.prototype.increaseSize = command('SizeIncrease', 'Size');
     Editor.prototype.setType = command('Type');
     Editor.prototype.setColor = command('Color');
 
@@ -303,7 +321,7 @@
                 value = value.replace(rquotes, '');
             }
 
-            self.emit(ev, value);
+            self.emit(ev, value, name);
         };
     }
 

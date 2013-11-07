@@ -1,8 +1,30 @@
 .editable {
+    background-color: #dedede;
     padding: 20px;
+    outline: 0;
 }
 
-.editable:focus {
-    outline: 0;
-    background-color: #cecece;
+.ui {
+    background-color: #555;
+    color: #fcc;
+}
+
+.ui[disabled] {
+    background-color: #999;
+    pointer-events: none;
+}
+
+.ui-state {
+    padding: 8px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.ui-state:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.ui-enabled {
+    background-color: #444;
+    color: #dedede;
 }

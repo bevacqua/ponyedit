@@ -5,8 +5,21 @@ html
 
         link(rel='stylesheet', href='/css/ponyedit.min.css')
         link(rel='stylesheet', href='/css/example.min.css')
+
     body
-        article.editable Edit my things!
+        div.ui
+            span.ui-state.ui-bold Bold
+            span.ui-state.ui-italic Italic
+            span.ui-state.ui-size-up +
+            span.ui-state.ui-size-down -
+
+        article.editable
+            :markdown
+                Edit my **things**! and maybe some of _your things_...
+
+                The <font size='5'>status bar</font> above represents **state**.
+
+                You can click on stuff when something is selected, _and edit **things**_.
 
         script(src='/js/eventemitter2.min.js')
         script(src='/js/ponyedit.min.js')
