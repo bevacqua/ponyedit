@@ -68,7 +68,8 @@ module.exports = function (grunt) {
                     'bower.json',
                     'src/ponyedit.min.css',
                     'src/ponyedit.min.js'
-                ]
+                ],
+                pushTo: 'origin'
             }
         }
     });
