@@ -13,7 +13,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13",
-    "lodash": "~2.2.1"
+    "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13"
   }
 }
