@@ -31,6 +31,7 @@
         self.state = { active: false };
         self.content = element;
         self.options = options || {};
+        self.on('report.*', stateChange.bind(self));
 
         opt('htmlWrap', true);
 
@@ -325,7 +326,6 @@
                 value = value.replace(rquotes, '');
             }
 
-            stateChange.call(self, value, name);
             self.emit(ev, value, name);
             return value;
         };
@@ -340,7 +340,6 @@
                 delete self.state[prop];
             }
         }
-
         self.state[prop] = value;
     }
 
