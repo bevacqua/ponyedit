@@ -80,4 +80,5 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['lint']);
     grunt.registerTask('build', ['lint', 'clean', 'uglify', 'cssmin', 'copy']);
     grunt.registerTask('deploy', ['build', 'bump']);
+    grunt.registerTask('heroku', ['build']);
 };
