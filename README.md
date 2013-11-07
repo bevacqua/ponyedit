@@ -1,8 +1,12 @@
 # ponyedit
 
-An interface between `contentEditable` and your UI
+An interface between `contentEditable` and your UI.
 
 [**Live Demo**](http://ponyedit.herokuapp.com)
+
+Sample UI:
+
+![ui.png][1]
 
 Note that the UI is entirely decoupled from this library, and is defined in the sample [JS](https://github.com/bevacqua/ponyedit/blob/master/web/assets/js/example.js), [CSS](https://github.com/bevacqua/ponyedit/blob/master/web/assets/css/example.css), and [HTML](https://github.com/bevacqua/ponyedit/blob/master/web/views/index.jade)
 
@@ -146,3 +150,4 @@ Convenience shortcut to `ponyeditor.meta`, without an instance.
 
 Creates a `ponyeditor` for the element, and sets `contentEditable` on for that element.
 
+  [1]: http://i.imgur.com/NYNlIWg.png
