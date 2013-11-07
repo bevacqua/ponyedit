@@ -9,7 +9,7 @@ app.engine('.jade', jade.__express);
 app.set('views', 'web/views');
 app.use(app.router);
 app.use(express.static(__dirname + '/web/statics'));
-app.use(express.favicon(__dirname + '/web/statics/favicon.ico'));
+app.use(express.favicon(__dirname + '/web/assets/favicon.ico'));
 app.listen(port);
 
 app.get('/', function (req, res) {

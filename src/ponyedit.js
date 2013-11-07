@@ -34,8 +34,6 @@
 
         opt('htmlWrap', true);
 
-        self.on('report.*', stateChange.bind(self));
-
         bindElements.call(self);
         buildPastebin.call(self);
         createEventBindings.call(self);
@@ -51,19 +49,6 @@
         if (!(name in this.options)) {
             this.options[name] = defaultValue;
         }
-    }
-
-    function stateChange (value, prop) {
-        var self = this;
-        var key;
-
-        if (prop === 'active' && value === false) {
-            for (key in self.state) {
-                delete self.state[prop];
-            }
-        }
-
-        self.state[prop] = value;
     }
 
     function bindElements () {
@@ -145,9 +130,9 @@
             checkTextHighlighting.call(self, e);
         });
         document[addEventListener]('mouseup', function(e) {
-            setTimeout(function() {
+            setTimeout(function () {
                 checkTextHighlighting.call(self, e);
-            });
+            }, 0);
         });
     }
 
@@ -251,7 +236,8 @@
     };
 
     Editor.prototype.saveSelection = function () {
-        var range = getSelection();
+        var self = this;
+        var range = self.getSelection();
         if (range !== void 0) {
             self.lastRange = range;
         }
@@ -309,7 +295,7 @@
             var self = this;
             self.restoreSelection(!preserveSelection);
             self['exec' + action].apply(self, args || []);
-            self['report' + (prop || action)] ();
+            self['report' + (prop || action)]();
         };
     }
 
@@ -339,9 +325,23 @@
                 value = value.replace(rquotes, '');
             }
 
+            stateChange.call(self, value, name);
             self.emit(ev, value, name);
             return value;
         };
+    }
+
+    function stateChange (value, prop) {
+        var self = this;
+        var key;
+
+        if (prop === 'active' && value === false) {
+            for (key in self.state) {
+                delete self.state[prop];
+            }
+        }
+
+        self.state[prop] = value;
     }
 
     Editor.prototype.reportBold = report('bold', 'bold', 'bool');

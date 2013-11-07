@@ -23,11 +23,9 @@
         true: 'removeAttribute' // active removes disabled
     };
 
-    function update () {
-        _.debounce(function () {
-            // set or remove disabled state
-            ui[enabled[pony.state.active]]('disabled');
-        }, 100);
+    function update (value, prop) {
+        // set or remove disabled state
+        ui[enabled[pony.state.active]]('disabled');
 
         // toggle bold css class
         uiBold.classList.toggle('ui-enabled', pony.state.bold);
