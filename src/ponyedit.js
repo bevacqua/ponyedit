@@ -22,6 +22,7 @@
 
     function Editor (element, options) {
         var self = this;
+        var opt = setOption.bind(self);
 
         ee.call(self, {
             wildcard: true // support wildcard listeners
@@ -30,6 +31,9 @@
         self.state = { active: false };
         self.content = element;
         self.options = options || {};
+
+        opt('htmlWrap', true);
+
         self.on('report.*', stateChange.bind(self));
 
         bindElements.call(self);
@@ -42,6 +46,12 @@
     // extends EventEmitter2
     Editor.prototype = Object.create(ee.prototype);
     Editor.prototype.constructor = Editor;
+
+    function setOption (name, defaultValue) {
+        if (!(name in this.options)) {
+            this.options[name] = defaultValue;
+        }
+    }
 
     function stateChange (value, prop) {
         var self = this;
@@ -227,16 +237,23 @@
         }
     };
 
-    Editor.prototype.saveSelection = function () {
+    Editor.prototype.getSelection = function () {
         var self = this, range;
         var selection = window.getSelection();
         if (selection.getRangeAt && selection.rangeCount) {
             range = selection.getRangeAt(0);
 
-            // only update lastRange if selection is inside editor
+            // only return something if selection is inside editor
             if (isChildOf(self.content, range.commonAncestorContainer)) {
-                self.lastRange = range;
+                return range;
             }
+        }
+    };
+
+    Editor.prototype.saveSelection = function () {
+        var range = getSelection();
+        if (range !== void 0)
+            self.lastRange = range;
         }
     };
 
@@ -283,7 +300,8 @@
         exec('foreColor', false, value);
     };
     Editor.prototype.execAlignment = function (value) {
-        exec('justify' + value, false, null);
+        var normalized = value[0].toUpperCase() + value.slice(1).toLowerCase();
+        exec('justify' + normalized, false, null);
     };
 
     function command (action, prop) {
@@ -322,6 +340,7 @@
             }
 
             self.emit(ev, value, name);
+            return value;
         };
     }
 
