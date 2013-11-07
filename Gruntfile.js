@@ -62,12 +62,16 @@ module.exports = function (grunt) {
         },
         bump: {
             options: {
+                updateFiles: [
+                    'package.json',
+                    'bower.json'
+                ],
                 commitFiles: [
                     'package.json',
+                    'bower.json',
                     'src/ponyedit.min.css',
                     'src/ponyedit.min.js'
-                ],
-                createTag: false
+                ]
             }
         }
     });
