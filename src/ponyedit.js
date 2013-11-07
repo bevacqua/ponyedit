@@ -252,7 +252,7 @@
 
     Editor.prototype.saveSelection = function () {
         var range = getSelection();
-        if (range !== void 0)
+        if (range !== void 0) {
             self.lastRange = range;
         }
     };
