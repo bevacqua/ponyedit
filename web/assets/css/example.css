@@ -1,3 +1,19 @@
+body {
+    background-color: #f3dc52;
+}
+
+.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+}
+
+.example {
+    margin: 30px auto;
+    max-width: 500px;
+}
+
 .editable {
     background-color: #dedede;
     padding: 20px;

@@ -7,19 +7,26 @@ html
         link(rel='stylesheet', href='/css/example.min.css')
 
     body
-        div.ui
-            span.ui-state.ui-bold Bold
-            span.ui-state.ui-italic Italic
-            span.ui-state.ui-size-up +
-            span.ui-state.ui-size-down -
+        a(href='https://github.com/bevacqua/ponyedit')
+            img.ribbon(src='https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png', alt='')
 
-        article.editable
-            :markdown
-                Edit my **things**! and maybe some of _your things_...
+        section.example
+            div
+                p Try ponyedit!
 
-                The <font size='5'>status bar</font> above represents **state**.
+            div.ui
+                span.ui-state.ui-bold Bold
+                span.ui-state.ui-italic Italic
+                span.ui-state.ui-size-up +
+                span.ui-state.ui-size-down -
 
-                You can click on stuff when something is selected, _and edit **things**_.
+            article.editable
+                :markdown
+                    Edit my **things**! and maybe some of _your things_...
+
+                    The <font size='5'>status bar</font> above represents **state**.
+
+                    You can click on stuff when something is selected, _and edit **things**_.
 
         script(src='/js/eventemitter2.min.js')
         script(src='/js/ponyedit.min.js')
