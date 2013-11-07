@@ -64,7 +64,8 @@ module.exports = function (grunt) {
                     'src/ponyedit.min.css',
                     'src/ponyedit.min.js'
                 ],
-                createTag: false
+                createTag: false,
+                pushTo: 'heroku'
             }
         }
     });
