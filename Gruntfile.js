@@ -59,7 +59,7 @@ module.exports = function (grunt) {
         },
         bump: {
             options: {
-                updateFiles: [
+                files: [
                     'package.json',
                     'bower.json'
                 ],
