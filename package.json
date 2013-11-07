@@ -1,13 +1,27 @@
 {
   "name": "ponyedit",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bevacqua/ponyedit",
+  "authors": [
+    "Nicolas Bevacqua <hello@bevacqua.io>"
+  ],
+  "description": "An interface between contentEditable and your UI",
+  "license": "MIT",
   "dependencies": {
     "express": "3.4.4",
-    "jade": "0.35.0"
+    "jade": "~0.35.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-bump": "0.0.11"
   },
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-contrib-jshint": "0.7.1",
     "grunt-contrib-watch": "0.5.3",
-    "jshint-stylish": "0.1.3"
+    "grunt-contrib-uglify": "0.2.5",
+    "jshint-stylish": "0.1.3",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-cssmin": "~0.7.0",
+    "grunt-contrib-csslint": "~0.1.2",
+    "grunt-contrib-clean": "~0.5.0"
   }
 }

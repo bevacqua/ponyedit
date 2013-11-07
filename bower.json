@@ -1,0 +1,18 @@
+{
+  "name": "ponyedit",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bevacqua/ponyedit",
+  "authors": [
+    "Nicolas Bevacqua <hello@bevacqua.io>"
+  ],
+  "description": "An interface between contentEditable and your UI",
+  "license": "MIT",
+  "ignore": [
+    "web",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13"
+  }
+}

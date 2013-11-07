@@ -5,7 +5,7 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 
-app.engine('.jade', jade);
+app.engine('.jade', jade.__express);
 app.set('views', 'web/views');
 app.use(app.router);
 app.use(express.static(__dirname + '/web/statics'));
