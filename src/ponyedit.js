@@ -1,6 +1,7 @@
 (function(window, document, ee) {
     'use strict';
 
+    /* jshint validthis:true */
     var ponies = [];
     var wasCollapsed;
     var query = document.queryCommandValue.bind(document);
@@ -45,7 +46,7 @@
 
         content.contentEditable = true;
         content.classList.add('py-editable');
-    };
+    }
 
     function buildPastebin () {
         var self = this;
@@ -64,7 +65,7 @@
                 pasteHandler(e);
             }
         });
-    };
+    }
 
     function pasteHandler (e) {
         var self = this;
@@ -122,7 +123,7 @@
                 checkTextHighlighting.call(self, e);
             });
         });
-    };
+    }
 
     function checkTextHighlighting (e) {
         var self = this;
@@ -149,7 +150,7 @@
 
         // report whether a selection exists
         self.emit('report.active', !wasCollapsed);
-    };
+    }
 
     function findNodes (content, element) {
         var nodeNames = {};
@@ -163,7 +164,7 @@
             element = element.parentNode;
         }
         return nodeNames;
-    };
+    }
 
     function isChildOf ( parent, element ) {
 
@@ -176,11 +177,11 @@
             }
             element = element.parentNode;
         }
-    };
+    }
 
     function hasNode ( nodeList, name ) {
         return !!nodeList[name];
-    };
+    }
 
     Editor.prototype.focus = function () {
         var range = document.createRange();
@@ -194,9 +195,19 @@
         var self = this;
 
         if (value === void 0) {
-            return self.content.innerHTML;
+            return fix(self.content.innerHTML);
         } else {
-            self.content.innerHTML = value;
+            self.content.innerHTML = fix(value);
+        }
+
+        // wrap the HTML in a div.
+        function fix (html) {
+            if (self.options.htmlWrap === false) { return html; }
+
+            if (html.substr(0,5) !== '<div>') {
+                html = '<div>' + html + '</div>';
+            }
+            return html;
         }
     };
 
@@ -260,11 +271,10 @@
     };
 
     function command (action) {
-        return function (preserveSelection) {
+        return function (args, preserveSelection) {
             var self = this;
-            var args = Array.prototype.slice.call(arguments);
             self.restoreSelection(!preserveSelection);
-            self['exec' + action].apply(self, args);
+            self['exec' + action].apply(self, args || []);
             self['report' + action]();
         };
     }
