@@ -13,12 +13,14 @@ module.exports = function (grunt) {
                 src: ['src/ponyedit.css']
             }
         },
+        clean: {
+            statics: ['web/statics']
+        },
         uglify: {
             src: {
                 files: {
                     'src/ponyedit.min.js': ['src/ponyedit.js'],
-                    'web/statics/js/ponyedit.min.js': ['src/ponyedit.js'],
-                    'web/statics/js/example.min.js': ['web/assets/js/example.js']
+                    'web/statics/js/example.min.js': ['web/assets/js/**/*.js']
                 }
             },
             bower: {
@@ -31,7 +33,10 @@ module.exports = function (grunt) {
         },
         cssmin: {
             src: {
-                files: { 'src/ponyedit.min.css': ['src/ponyedit.css'] }
+                files: {
+                    'src/ponyedit.min.css': ['src/ponyedit.css'],
+                    'web/statics/css/example.min.css': ['web/assets/css/**/*.css']
+                }
             }
         },
         copy: {
@@ -72,7 +77,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.registerTask('lint', ['jshint', 'csslint']);
-    grunt.registerTask('default', ['lint', 'watch']);
+    grunt.registerTask('default', ['lint']);
     grunt.registerTask('build', ['lint', 'clean', 'uglify', 'cssmin', 'copy']);
     grunt.registerTask('deploy', ['build', 'bump']);
 };

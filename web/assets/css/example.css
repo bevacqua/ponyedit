@@ -1,0 +1,8 @@
+.editable {
+    padding: 20px;
+}
+
+.editable:focus {
+    outline: 0;
+    background-color: #cecece;
+}
