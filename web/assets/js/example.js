@@ -24,8 +24,10 @@
     };
 
     function update () {
-        // set or remove disabled state
-        ui[enabled[pony.state.active]]('disabled');
+        _.debounce(function () {
+            // set or remove disabled state
+            ui[enabled[pony.state.active]]('disabled');
+        }, 100);
 
         // toggle bold css class
         uiBold.classList.toggle('ui-enabled', pony.state.bold);
