@@ -307,6 +307,7 @@
     Editor.prototype.increaseSize = command('SizeIncrease', 'Size');
     Editor.prototype.setType = command('Type');
     Editor.prototype.setColor = command('Color');
+    Editor.prototype.setAlignment = command('Alignment');
 
     // property state emission
 
@@ -348,7 +349,7 @@
     Editor.prototype.reportSize = report('fontSize', 'size', 'int');
     Editor.prototype.reportType = report('fontName', 'type');
     Editor.prototype.reportColor = report('foreColor', 'color');
-    Editor.prototype.reportAlignment = report('foreColor', 'color');
+    Editor.prototype.reportAlignment = report('alignment', 'alignment');
     Editor.prototype.report = function () {
         var self = this;
         self.reportBold();
