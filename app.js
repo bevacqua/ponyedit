@@ -16,4 +16,8 @@ app.get('/', function (req, res) {
     res.render('index.jade');
 });
 
+app.get('/angular', function (req, res) {
+    res.render('angular.jade');
+});
+
 console.log('express listening on port %s', port);
