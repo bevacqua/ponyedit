@@ -74,6 +74,14 @@ module.exports = function (grunt) {
                 ],
                 pushTo: 'origin' // push to heroku separately
             }
+        },
+        shell: {
+            'npm-publish': {
+                cmd: 'npm publish'
+            },
+            'heroku-push': {
+                cmd: 'git push heroku master'
+            }
         }
     });
     grunt.loadNpmTasks('grunt-bump');
@@ -87,6 +95,6 @@ module.exports = function (grunt) {
     grunt.registerTask('lint', ['jshint', 'csslint']);
     grunt.registerTask('default', ['lint']);
     grunt.registerTask('build', ['lint', 'clean', 'uglify', 'cssmin', 'copy']);
-    grunt.registerTask('deploy', ['build', 'bump']);
+    grunt.registerTask('deploy', ['build', 'bump', 'shell:npm-publish', 'shell:heroku-push']);
     grunt.registerTask('heroku', ['build']);
 };
