@@ -123,6 +123,7 @@ These methods restore the latest selection, execute the appropriate `.exec` comm
 - `.increaseSize(args, preserveSelection)`
 - `.setType(args, preserveSelection)`
 - `.setColor(args, preserveSelection)`
+- `.setAlignment(args, preserveSelection)`
 
 Note that, in order to be future proof, these methods' `args` should be an array of arguments to pass to the `.exec` command. As such, setting the size should be invoked like this:
 
@@ -141,6 +142,7 @@ These methods emit the state each particular property is in, or all of them at o
 - `.reportSize()`
 - `.reportType()`
 - `.reportColor()`
+- `.reportAlignment()`
 - `.report()`
 
 #### `.meta` Object

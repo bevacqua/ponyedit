@@ -348,6 +348,7 @@
     Editor.prototype.reportSize = report('fontSize', 'size', 'int');
     Editor.prototype.reportType = report('fontName', 'type');
     Editor.prototype.reportColor = report('foreColor', 'color');
+    Editor.prototype.reportAlignment = report('foreColor', 'color');
     Editor.prototype.report = function () {
         var self = this;
         self.reportBold();
@@ -355,6 +356,7 @@
         self.reportSize();
         self.reportType();
         self.reportColor();
+        self.reportAlignment();
     };
 
     Editor.prototype.meta = {
