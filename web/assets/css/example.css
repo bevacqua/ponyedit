@@ -34,6 +34,12 @@ body {
     padding: 8px;
     display: inline-block;
     cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .ui-state:hover {

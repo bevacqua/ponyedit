@@ -367,15 +367,14 @@
     Object.freeze(Editor.prototype.meta);
 
     window.ponyedit = function (element) {
+        if (element instanceof Editor) {
+            return element;
+        }
         return find(element);
     };
 
     window.ponyedit.meta = Editor.prototype.meta;
     window.ponyedit.init = function (element, options) {
-        if (element instanceof Editor) {
-            return element;
-        }
-
         var instance = find(element);
         if (instance) {
             return instance;

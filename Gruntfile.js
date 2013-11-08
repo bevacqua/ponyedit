@@ -6,7 +6,8 @@ module.exports = function (grunt) {
             options: {
                 reporter: require('jshint-stylish')
             },
-            src: ['src/ponyedit.js']
+            src: ['src/ponyedit.js'],
+            examples: ['web/assets/js/**/*.js']
         },
         csslint: {
             src: {
