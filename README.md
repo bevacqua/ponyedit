@@ -142,7 +142,7 @@ These methods emit the state each particular property is in, or all of them at o
 - `.reportSize()`
 - `.reportType()`
 - `.reportColor()`
-- `.reportAlignment()`
+- `.reportAlignment()` normalized to report one of `left`, `center`, `right`, or `''`
 - `.report()`
 
 #### `.meta` Object
