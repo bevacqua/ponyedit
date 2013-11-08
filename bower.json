@@ -13,7 +13,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "1.0.8",
     "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13"
   }
 }
