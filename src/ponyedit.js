@@ -309,14 +309,28 @@
     Editor.prototype.setColor = command('Color');
     Editor.prototype.setAlignment = command('Alignment');
 
+    // complex state queries
+    var queries = {
+        alignment: function () {
+            var lquery = query('justifyLeft');
+            var cquery = query('justifyCenter');
+            var rquery = query('justifyRight');
+            if (lquery === 'true' || lquery === true) return 'left';
+            if (cquery === 'true' || cquery === true) return 'center';
+            if (rquery === 'true' || rquery === true) return 'right';
+            return '';
+        }
+    };
+
     // property state emission
 
     function report (property, name, parse) {
         var rquotes = /^['"]|['"]$/g;
+        var inspect = queries[property] || query;
 
         return function () {
             var self = this;
-            var value = query(property);
+            var value = inspect(property);
             var ev = 'report.' + name;
 
             if (parse === 'bool') {
