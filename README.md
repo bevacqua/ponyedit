@@ -124,6 +124,14 @@ These methods restore the latest selection, execute the appropriate `.exec` comm
 - `.setType(args, preserveSelection)`
 - `.setColor(args, preserveSelection)`
 
+Note that, in order to be future proof, these methods' `args` should be an array of arguments to pass to the `.exec` command. As such, setting the size should be invoked like this:
+
+```js
+ponyeditor.setSize([2]);
+```
+
+That'll end up invoking `ponyeditor.execSize(2)`.
+
 #### `.report` Methods
 
 These methods emit the state each particular property is in, or all of them at once with `.report()`.
