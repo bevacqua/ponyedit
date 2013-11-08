@@ -4,6 +4,7 @@ body {
 
 .try-the-other {
     display: inline;
+    margin-left: 6px;
     color: #f66;
 }
 
