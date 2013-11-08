@@ -2,7 +2,8 @@
 
 An interface between `contentEditable` and your UI.
 
-[**Live Demo**](http://ponyedit.herokuapp.com)
+- [**Blog Post**](http://blog.ponyfoo.com/2013/11/08/angular-wysiwyg)
+- [**Live Demo**](http://ponyedit.herokuapp.com)
 
 Sample UI:
 
