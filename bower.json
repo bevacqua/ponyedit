@@ -12,6 +12,7 @@
     "node_modules",
     "bower_components"
   ],
+  "main": "src/ponyedit.js",
   "dependencies": {
     "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13"
   }
