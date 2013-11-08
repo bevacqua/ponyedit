@@ -20,7 +20,8 @@ module.exports = function (grunt) {
             src: {
                 files: {
                     'src/ponyedit.min.js': ['src/ponyedit.js'],
-                    'web/statics/js/example.min.js': ['web/assets/js/**/*.js']
+                    'web/statics/js/example.min.js': ['web/assets/js/example.js'],
+                    'web/statics/js/example.angular.min.js': ['web/assets/js/example.angular.js']
                 }
             },
             bower: {
@@ -35,13 +36,14 @@ module.exports = function (grunt) {
             src: {
                 files: {
                     'src/ponyedit.min.css': ['src/ponyedit.css'],
-                    'web/statics/css/example.min.css': ['web/assets/css/**/*.css']
+                    'web/statics/css/example.min.css': ['web/assets/css/example.css']
                 }
             }
         },
         copy: {
             src: {
                 files: {
+                    'web/statics/js/angular.min.js': 'bower_components/angular/angular.min.js',
                     'web/statics/js/ponyedit.min.js': 'src/ponyedit.min.js',
                     'web/statics/css/ponyedit.min.css': 'src/ponyedit.min.css'
                 }
