@@ -12,7 +12,11 @@ html
 
         section.example(ng-app='example')
             div
-                p Try ponyedit! (Angular Way)
+                p
+                    | Try ponyedit!
+
+                    a.try-the-other(href='/')
+                        i='(try the regular way!)'
 
             div.ui(ng-controller='exampleCtrl', ng-disabled='!state.active')
                 span.ui-state.ui-bold(ng-click='setBold()', ng-class='{true:"ui-enabled"}[state.bold]') Bold
