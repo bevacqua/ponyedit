@@ -77,10 +77,10 @@ module.exports = function (grunt) {
         },
         shell: {
             'npm-publish': {
-                cmd: 'npm publish'
+                command: 'npm publish'
             },
             'heroku-push': {
-                cmd: 'git push heroku master'
+                command: 'git push heroku master'
             }
         }
     });
