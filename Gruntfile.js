@@ -77,9 +77,11 @@ module.exports = function (grunt) {
         },
         shell: {
             'npm-publish': {
+                options: { stdout: true },
                 command: 'npm publish'
             },
             'heroku-push': {
+                options: { stdout: true },
                 command: 'git push heroku master'
             }
         }
