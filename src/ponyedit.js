@@ -261,30 +261,35 @@
 
     // pixel font size handling
 
-    var rstyle = /^<span\s+class=["']py-pixels-element["']\s+style=["'](.*)["']/i;
+    var rstyle = /^<span\s+class=["']py-pixels-element["']\s+style=["'].*font-size\s*:\s*([0-9]+)px\s*;?.*["']/i;
 
     function getPixels () {
         var sel = rangy.getSelection();
-        var contents = sel.extractContents();
+        var contents = sel.toHtml();
         var match = contents.match(rstyle);
-        if (match && match.length > 1) {
+        if (match && match.length > 1) {console.log('match-si',match);
             return match[1];
-        } else {
-            // ??
         }
+console.log('match-no',query('fontSize'));
+        return query('fontSize');
     }
 
-    function setPixels () {
+    function setPixels (value) {
         var sel = rangy.getSelection();
-        var contents = sel.extractContents();
-
-    }
-
-    function getSize () {
-        if (this.options.pixels) {
-            return getPixels();
-        } else {
-            return parseInt(query('fontSize'), 10);
+        var node, range = sel.getRangeAt(0);
+        var children = range.commonAncestorContainer.children;
+        // find py-pix and set, or add py-pix wrapper
+        console.log(range);
+        var pixels = children && children[0].classList.contains('py-pixels-element');
+        if (pixels) {console.log('px');
+            container.style.fontSize = value + 'px';
+        } else {console.log('px-no');
+            node = document.createElement('span');
+            node.classList.add('py-pixels-element');
+            node.style.fontSize = value + 'px';
+            range.surroundContents(node);
+            range.selectNode(node);
+            sel.setSingleRange(range);window.c=range;
         }
     }
 
@@ -304,7 +309,7 @@
         }
     };
     Editor.prototype.execSizeDecrease = function () {
-        var value = getSize() - 1;
+        var value = queries.fontSize.call(this) - 1;
         if (this.options.pixels) {
             setPixels(value);
         } else {
@@ -312,7 +317,7 @@
         }
     };
     Editor.prototype.execSizeIncrease = function () {
-        var value = getSize() + 1;
+        var value = queries.fontSize.call(this) + 1;
         if (this.options.pixels) {
             setPixels(value);
         } else {
@@ -351,7 +356,11 @@
     // complex state queries
     var queries = {
         fontSize: function () {
-            return getSize();
+            var value = this.options.pixels ?
+                getPixels() :
+                query('fontSize');
+
+            return parseInt(value, 10);
         },
         alignment: function () {
             var lquery = query('justifyLeft');
@@ -372,7 +381,7 @@
 
         return function () {
             var self = this;
-            var value = inspect(property);
+            var value = inspect.call(self, property);
             var ev = 'report.' + name;
 
             if (parse === 'bool') {
