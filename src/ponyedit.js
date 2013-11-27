@@ -1,4 +1,4 @@
-(function(window, document, ee) {
+(function(window, document, ee, rangy) {
     'use strict';
 
     /* jshint validthis:true */
@@ -259,11 +259,36 @@
         }
     };
 
-    // contentEditable commands
+    // pixel font size handling
+
+    var rstyle = /^<span\s+class=["']py-pixels-element["']\s+style=["'](.*)["']/i;
+
+    function getPixels () {
+        var sel = rangy.getSelection();
+        var contents = sel.extractContents();
+        var match = contents.match(rstyle);
+        if (match && match.length > 1) {
+            return match[1];
+        } else {
+            // ??
+        }
+    }
+
+    function setPixels () {
+        var sel = rangy.getSelection();
+        var contents = sel.extractContents();
+
+    }
 
     function getSize () {
-        return parseInt(query('fontSize'), 10);
+        if (this.options.pixels) {
+            return getPixels();
+        } else {
+            return parseInt(query('fontSize'), 10);
+        }
     }
+
+    // contentEditable commands
 
     Editor.prototype.execBold = function () {
         exec('bold', false);
@@ -272,13 +297,27 @@
         exec('italic', false);
     };
     Editor.prototype.execSize = function (value) {
-        exec('fontSize', false, value);
+        if (this.options.pixels) {
+            setPixels(value);
+        } else {
+            exec('fontSize', false, value);
+        }
     };
     Editor.prototype.execSizeDecrease = function () {
-        exec('fontSize', false, getSize() - 1);
+        var value = getSize() - 1;
+        if (this.options.pixels) {
+            setPixels(value);
+        } else {
+            exec('fontSize', false, value);
+        }
     };
     Editor.prototype.execSizeIncrease = function () {
-        exec('fontSize', false, getSize() + 1);
+        var value = getSize() + 1;
+        if (this.options.pixels) {
+            setPixels(value);
+        } else {
+            exec('fontSize', false, value);
+        }
     };
     Editor.prototype.execType = function (value) {
         exec('fontName', false, value);
@@ -311,6 +350,9 @@
 
     // complex state queries
     var queries = {
+        fontSize: function () {
+            return getSize();
+        },
         alignment: function () {
             var lquery = query('justifyLeft');
             var cquery = query('justifyCenter');
@@ -399,4 +441,4 @@
         return new Editor(element, options);
     };
 
-})(window, document, EventEmitter2);
+})(window, document, EventEmitter2, rangy);
