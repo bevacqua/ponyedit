@@ -29,6 +29,9 @@ module.exports = function (grunt) {
                 files: {
                     'web/statics/js/eventemitter2.min.js': [
                         'bower_components/eventemitter2/lib/eventemitter2.js'
+                    ],
+                    'web/statics/js/rangy.js': [
+                        'bower_components/rangy/rangy-core.js'
                     ]
                 }
             }
