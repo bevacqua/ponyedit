@@ -438,7 +438,7 @@
 
     Editor.prototype.meta = {
         fontSizes: [1, 2, 3, 4, 5, 6, 7],
-        fontPixels: [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 72];
+        fontPixels: [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 72],
         fontTypes: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Palatino', 'Times New Roman', 'Trebuchet MS', 'Verdana'],
         alignments: ['Left', 'Center', 'Right']
     };
