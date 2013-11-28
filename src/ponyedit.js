@@ -279,7 +279,7 @@
             return parent.style.fontSize.replace(/px/i, '');
         }
 
-        return query('fontSize');
+        return window.getComputedStyle(parent).fontSize.replace(/px/i, '');
     }
 
     function setPixels (value) {
