@@ -75,9 +75,12 @@ Here are the default values.
 
 ```js
 {
-  htmlWrap: true
+  htmlWrap: true,
+  pixels: false
 }
 ```
+
+The pixels option defaults to `false`, using `<font size='{n}'>` tags just like native `contentEditable` does. Setting it to `true` results in `<span class='py-pixels-element' style='font-size: {n}px;'>` tags instead.
 
 #### `.focus()`
 
@@ -89,8 +92,11 @@ Similar to jQuery's method, gets or sets the HTML contents in our editable. If t
 
 #### `.getSelection()`
 
-Gets the currently selected range of text, only if the selection is inside the content editable area of our element.
+Gets the current selection, only if it's inside the content editable area of our element.
 
+#### `.getRange()`
+
+Gets the currently selected range of text, only if the selection is inside the content editable area of our element.
 #### `.saveSelection()`
 
 Takes the selection from `.getSelection` and saves it for later. It can be restored later. This also happens whenever the user selects text by hand (or unselects it).

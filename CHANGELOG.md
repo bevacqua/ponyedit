@@ -1,7 +1,10 @@
+# v0.1.4 Broken Chair
+
+- `.getSelection` now returns a `Selection` object. Use `.getRange` instead for the old functionality.
+
 # v0.1.0 Elvish Ranger
 
-- Added external dependency on `rangy`
-- Update font size API to deal with `px` font sizes if `options.pixels` is `true`
+- Update font size API to work with `px` font sizes if `options.pixels` is `true`. By default font size API works with `<font size='n'>` tags, like native `contentEditable`.
 
 # v0.0.11 Botomless Pit
 
