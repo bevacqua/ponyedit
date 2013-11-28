@@ -266,6 +266,7 @@
     };
 
     // pixel font size handling
+    var pixelClass = 'py-pixels-element';
 
     function getPixels () {
         var sel = this.getSelection();
@@ -274,7 +275,7 @@
         }
         var range = sel.getRangeAt(0);
         var parent = sel.focusNode.parentNode;
-        var pixels = parent.classList.contains('py-pixels-element');
+        var pixels = parent.classList.contains(pixelClass);
         if (pixels) {
             return parent.style.fontSize.replace(/px/i, '');
         }
@@ -283,33 +284,67 @@
     }
 
     function setPixels (value) {
-        var node, fragment;
         var sel = this.getSelection();
         if (!sel) {
             return;
         }
         var range = sel.getRangeAt(0);
-        var focus = sel.focusNode.parentNode;
-        var pixels = focus.classList.contains('py-pixels-element');
-        if (pixels && focus === sel.anchorNode.parentNode) {
-            // selection begins and ends in a py-pixels-element
-            focus.style.fontSize = value + 'px';
-            // ISSUE: selection blows up when
-            // multiple nodes are selected. how to resize that?
-            // hint: walk over children, assign offset to each.?
-            // +1ing size on each node independently, adding py-pix wrappers where needed.
+        var fragment = range.extractContents();
+        var node = document.createElement('span');
+
+        // untangle this mess, shouldn't be doing this here
+        // rather, might be able to get away with just using recurse.
+        // but I need to test that.
+        // i.e rm up until line 310. and just recurse on fragment, then append it.
+        setStyle(node);
+        node.appendChild(fragment);
+        range.insertNode(node);
+
+        var poc = isPixelOnlyChild(node);
+        if (poc) {
+            // only child getting replaced! life so cruel
+            dad.parentNode.replaceChild(node, dad);
         } else {
-            // wrap with font-size style span
-            fragment = range.extractContents();
-            node = document.createElement('span');
-            node.classList.add('py-pixels-element');
-            node.style.fontSize = value + 'px';
-            node.appendChild(fragment);
-            range.insertNode(node);
-            range.selectNode(node);
-            sel.removeAllRanges();
-            sel.addRange(range);
+            recurse(node.childNodes);
         }
+
+        function recurse (nodes) {
+            _.each(nodes, function (node) {
+                var poc, wrapper;
+
+                if (node.nodeName === '#text') {
+                    poc = isPixelOnlyChild(node);
+                    if (poc) { // update pixel wrapper
+                        setStyle(node.parentNode);
+                    } else { // wrap in pixel tag
+                        wrapper = document.createElement('span');
+                        wrapper.appendChild(node);
+                        node.parentNode.replaceChild(wrapper, node);
+                        setStyle(wrapper);
+                    }
+                } else {
+                    recurse(node.childNodes);
+                }
+            });
+        }
+
+        function isPixelOnlyChild (node) {
+            var dad = node.parentNode;
+            return dad.classList.contains(pixelClass) && _.every(dad.children, function (n) {
+                return n === node;
+            });
+        }
+
+        function setStyle (node) {
+            // should set value absolutely some times
+            // but if + or -, then shouldn't it be relative to the existing style? I think that'd fit best.
+            node.classList.add(pixelClass);
+            node.style.fontSize = value + 'px';
+        }
+
+        range.selectNode(node);
+        sel.removeAllRanges();
+        sel.addRange(range);
     }
 
     // contentEditable commands
