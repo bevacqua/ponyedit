@@ -283,21 +283,29 @@
     }
 
     function setPixels (value) {
-        var node;
+        var node, fragment;
         var sel = this.getSelection();
         if (!sel) {
             return;
         }
         var range = sel.getRangeAt(0);
-        var parent = sel.focusNode.parentNode;
-        var pixels = parent.classList.contains('py-pixels-element');
-        if (pixels) { // update existing font-size style
-            parent.style.fontSize = value + 'px';
-        } else { // wrap with font-size style span
+        var focus = sel.focusNode.parentNode;
+        var pixels = focus.classList.contains('py-pixels-element');
+        if (pixels && focus === sel.anchorNode.parentNode) {
+            // selection begins and ends in a py-pixels-element
+            focus.style.fontSize = value + 'px';
+            // ISSUE: selection blows up when
+            // multiple nodes are selected. how to resize that?
+            // hint: walk over children, assign offset to each.?
+            // +1ing size on each node independently, adding py-pix wrappers where needed.
+        } else {
+            // wrap with font-size style span
+            fragment = range.extractContents();
             node = document.createElement('span');
             node.classList.add('py-pixels-element');
             node.style.fontSize = value + 'px';
-            range.surroundContents(node);
+            node.appendChild(fragment);
+            range.insertNode(node);
             range.selectNode(node);
             sel.removeAllRanges();
             sel.addRange(range);
