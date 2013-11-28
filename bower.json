@@ -14,7 +14,6 @@
   ],
   "main": "src/ponyedit.js",
   "dependencies": {
-    "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13",
-    "rangy": "~1.2.3"
+    "eventemitter2": "https://github.com/hij1nx/EventEmitter2.git#~0.4.13"
   }
 }
