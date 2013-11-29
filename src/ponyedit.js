@@ -296,8 +296,10 @@
         }
         var range = sel.getRangeAt(0);
         var fragment = range.extractContents();
-        var placeholder = document.createElement('span');
         var children = Array.prototype.slice.call(fragment.childNodes);
+        if (children.length === 0) {
+            return; // selection was empty
+        }
         var child, i;
         for (i = children.length - 1; i >= 0; i--) {
             // inserting in reverse preserves order
@@ -307,6 +309,7 @@
 
         var startNode, endNode;
 
+        cleanup(child.parentNode);
         recurse(children);
 
         range.setStart(startNode);
@@ -316,6 +319,19 @@
         );
         sel.removeAllRanges();
         sel.addRange(range);
+
+        function cleanup (parent) {
+            var children = parent.childNodes;
+            var bastard, i;
+            for (i = 0; i < children.length; i++) {
+                bastard = children[i];
+
+                // extractContents can leave empty bastard children behind
+                if (bastard.nodeName === '#text' && !bastard.textContent.length) {
+                    parent.removeChild(bastard);
+                }
+            }
+        }
 
         function recurse (nodes) {
             _.each(nodes, function (node) {
@@ -342,9 +358,10 @@
 
         function isPixelOnlyChild (node) {
             var dad = node.parentNode;
-            return dad.classList.contains(pixelClass) && _.every(dad.children, function (n) {
-                return n === node;
+            var poc = dad.classList.contains(pixelClass) && _.every(dad.childNodes, function (n) {
+                return n === node || (n.nodeName === '#text' && !n.textContent.length);
             });
+            return poc;
         }
 
         function setStyle (node, reference) {
