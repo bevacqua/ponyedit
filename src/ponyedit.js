@@ -275,15 +275,17 @@
         }
         var range = sel.getRangeAt(0);
         var parent = sel.focusNode.parentNode;
-        var pixels = parent.classList.contains(pixelClass);
-        if (pixels) {
-            return getPixelSize(parent.style);
-        }
 
-        return getPixelSize(window.getComputedStyle(parent));
+        return getPixelSize(parent);
     }
 
-    function getPixelSize (style) {
+    function getPixelSize (node) {
+        var pixels = node.classList.contains(pixelClass), style;
+        if (pixels) {
+            style = node.style;
+        } else {
+            style = window.getComputedStyle(node);
+        }
         return parseInt(style.fontSize.replace(/px/i, ''), 10);
     }
 
@@ -348,7 +350,7 @@
         function setStyle (node, reference) {
             var size = value;
             if (offset) {
-                size += getPixelSize((reference || node).style);
+                size += getPixelSize(reference || node);
             }
             node.classList.add(pixelClass);
             node.style.fontSize = size + 'px';
