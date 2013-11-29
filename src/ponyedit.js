@@ -277,13 +277,17 @@
         var parent = sel.focusNode.parentNode;
         var pixels = parent.classList.contains(pixelClass);
         if (pixels) {
-            return parent.style.fontSize.replace(/px/i, '');
+            return getPixelSize(parent.style);
         }
 
-        return window.getComputedStyle(parent).fontSize.replace(/px/i, '');
+        return getPixelSize(window.getComputedStyle(parent));
     }
 
-    function setPixels (value) {
+    function getPixelSize (style) {
+        return parseInt(style.fontSize.replace(/px/i, ''), 10);
+    }
+
+    function setPixels (value, offset) {
         var sel = this.getSelection();
         if (!sel) {
             return;
@@ -318,9 +322,9 @@
                         setStyle(node.parentNode);
                     } else { // wrap in pixel tag
                         wrapper = document.createElement('span');
-                        wrapper.appendChild(node);
                         node.parentNode.replaceChild(wrapper, node);
-                        setStyle(wrapper);
+                        wrapper.appendChild(node);
+                        setStyle(wrapper, node.parentNode);
                     }
                 } else {
                     recurse(node.childNodes);
@@ -335,11 +339,13 @@
             });
         }
 
-        function setStyle (node) {
-            // should set value absolutely some times
-            // but if + or -, then shouldn't it be relative to the existing style? I think that'd fit best.
+        function setStyle (node, reference) {
+            var size = value;
+            if (offset) {
+                size += getPixelSize((reference || node).style);
+            }
             node.classList.add(pixelClass);
-            node.style.fontSize = value + 'px';
+            node.style.fontSize = size + 'px';
         }
 
         range.selectNode(node);
@@ -363,18 +369,22 @@
         }
     };
     Editor.prototype.execSizeDecrease = function () {
-        var value = queries.fontSize.call(this) - 1;
+        var value;
+
         if (this.options.pixels) {
-            setPixels.call(this, value);
+            setPixels.call(this, -1, true);
         } else {
+            value = queries.fontSize.call(this) - 1;
             exec('fontSize', false, value);
         }
     };
     Editor.prototype.execSizeIncrease = function () {
-        var value = queries.fontSize.call(this) + 1;
+        var value;
+
         if (this.options.pixels) {
-            setPixels.call(this, value);
+            setPixels.call(this, 1, true);
         } else {
+            value = queries.fontSize.call(this) + 1;
             exec('fontSize', false, value);
         }
     };
