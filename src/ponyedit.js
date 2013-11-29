@@ -334,7 +334,8 @@
         }
 
         function recurse (nodes) {
-            _.each(nodes, function (node) {
+            var nodeList = Array.prototype.slice.call(nodes);
+            nodeList.forEach(function (node) {
                 var poc, wrapper;
 
                 if (node.nodeName === '#text') {
@@ -358,7 +359,8 @@
 
         function isPixelOnlyChild (node) {
             var dad = node.parentNode;
-            var poc = dad.classList.contains(pixelClass) && _.every(dad.childNodes, function (n) {
+            var children = Array.prototype.slice.call(dad.childNodes);
+            var poc = dad.classList.contains(pixelClass) && children.every(function (n) {
                 return n === node || (n.nodeName === '#text' && !n.textContent.length);
             });
             return poc;
