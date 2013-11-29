@@ -323,7 +323,7 @@
                     poc = isPixelOnlyChild(node);
                     if (poc) { // update pixel wrapper
                         setStyle(node.parentNode);
-                    } else { // wrap in pixel tag
+                    } else if (node.textContent.length) { // wrap in pixel tag
                         wrapper = document.createElement('span');
                         node.parentNode.replaceChild(wrapper, node);
                         wrapper.appendChild(node);
