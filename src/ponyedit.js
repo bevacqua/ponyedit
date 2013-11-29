@@ -294,23 +294,26 @@
         }
         var range = sel.getRangeAt(0);
         var fragment = range.extractContents();
-        var node = document.createElement('span');
-
-        // untangle this mess, shouldn't be doing this here
-        // rather, might be able to get away with just using recurse.
-        // but I need to test that.
-        // i.e rm up until line 310. and just recurse on fragment, then append it.
-        setStyle(node);
-        node.appendChild(fragment);
-        range.insertNode(node);
-
-        var poc = isPixelOnlyChild(node);
-        if (poc) {
-            // only child getting replaced! life so cruel
-            dad.parentNode.replaceChild(node, dad);
-        } else {
-            recurse(node.childNodes);
+        var placeholder = document.createElement('span');
+        var children = Array.prototype.slice.call(fragment.childNodes);
+        var child, i;
+        for (i = children.length - 1; i >= 0; i--) {
+            // inserting in reverse preserves order
+            child = children[i];
+            range.insertNode(child);
         }
+
+        var startNode, endNode;
+
+        recurse(children);
+
+        range.setStart(startNode);
+        range.setEnd(endNode, endNode.nodeName === '#text' ?
+            endNode.textContent.length :
+            endNode.childNodes.length
+        );
+        sel.removeAllRanges();
+        sel.addRange(range);
 
         function recurse (nodes) {
             _.each(nodes, function (node) {
@@ -329,6 +332,9 @@
                 } else {
                     recurse(node.childNodes);
                 }
+
+                if (!startNode) startNode = wrapper || node;
+                endNode = wrapper || node;
             });
         }
 
@@ -347,10 +353,6 @@
             node.classList.add(pixelClass);
             node.style.fontSize = size + 'px';
         }
-
-        range.selectNode(node);
-        sel.removeAllRanges();
-        sel.addRange(range);
     }
 
     // contentEditable commands
