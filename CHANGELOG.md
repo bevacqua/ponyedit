@@ -1,3 +1,7 @@
+# v0.1.8 Piglet
+
+- Fixed bug breaking paste event handler
+
 # v0.1.4 Broken Chair
 
 - `.getSelection` now returns a `Selection` object. Use `.getRange` instead for the old functionality.

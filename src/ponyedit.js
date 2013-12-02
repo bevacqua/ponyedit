@@ -84,12 +84,12 @@
         if (!isChildOf(self.content, e.target)) { return; }
 
         self.saveSelection();
-        pastebin.focus();
+        self.pastebin.focus();
 
         setTimeout(function () {
             self.restoreSelection(true);
-            insertTextAtCaret(pastebin.value);
-            pastebin.value = '';
+            insertTextAtCaret(self.pastebin.value);
+            self.pastebin.value = '';
         });
     }
 
