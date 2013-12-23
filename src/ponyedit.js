@@ -306,12 +306,12 @@
     }
 
     function getPixelHeight (node) {
-        var picky = node.classList.contains(pickySize), style;
-        if (picky) {
+        var auto = node.classList.contains(pickyAutoHeight);
+        var picky = node.classList.contains(pickyHeight);
+        if (picky && !auto) {
             return parseInt(node.style.lineHeight.replace(/px/i, ''), 10);
-        } else {
-            return 'auto';
         }
+        return 'auto';
     }
 
     function setPicky (data) {
@@ -509,7 +509,7 @@
                 getHeight.call(this) :
                 0;
 
-            return parseInt(value, 10);
+            return value;
         },
         alignment: function () {
             var lquery = query('justifyLeft');
@@ -564,7 +564,7 @@
     Editor.prototype.reportType = report('fontName', 'type');
     Editor.prototype.reportColor = report('foreColor', 'color');
     Editor.prototype.reportAlignment = report('alignment', 'alignment');
-    Editor.prototype.reportAlignment = report('lineHeight', 'height', 'int');
+    Editor.prototype.reportAlignment = report('lineHeight', 'height');
     Editor.prototype.report = function () {
         var self = this;
         self.reportBold();
@@ -580,7 +580,7 @@
         fontPixels: [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 72],
         fontTypes: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Palatino', 'Times New Roman', 'Trebuchet MS', 'Verdana'],
         alignments: ['Left', 'Center', 'Right'],
-        lineHeights: [0.8, 0.9, 1, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3]
+        lineHeights: ['auto', 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.1, 2.5, 3]
     };
 
     // lock down the meta options
