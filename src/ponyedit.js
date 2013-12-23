@@ -265,23 +265,32 @@
         }
     };
 
-    // pixel font size handling
-    var pixelClass = 'py-pixels-element';
+    var pickyClass = 'py-picky-element';
+    var pickySize = 'py-picky-size';
+    var pickyHeight = 'py-picky-height';
+    var pickyAutoHeight = 'py-picky-height-auto';
+    var pickyAutoHeightFactor = 1.5;
 
-    function getPixels () {
-        var sel = this.getSelection();
+    function getFocusParent (pony) {
+        var sel = pony.getSelection();
         if (!sel) {
             return;
         }
         var range = sel.getRangeAt(0);
         var parent = sel.focusNode.parentNode;
+        return parent;
+    }
 
-        return getPixelSize(parent);
+    function getPixels () {
+        var parent = getFocusParent(this);
+        if (parent) {
+            return getPixelSize(parent);
+        }
     }
 
     function getPixelSize (node) {
-        var pixels = node.classList.contains(pixelClass), style;
-        if (pixels) {
+        var picky = node.classList.contains(pickySize), style;
+        if (picky) {
             style = node.style;
         } else {
             style = window.getComputedStyle(node);
@@ -289,8 +298,25 @@
         return parseInt(style.fontSize.replace(/px/i, ''), 10);
     }
 
-    function setPixels (value, offset) {
-        var sel = this.getSelection();
+    function getHeight () {
+        var parent = getFocusParent(this);
+        if (parent) {
+            return getPixelHeight(parent);
+        }
+    }
+
+    function getPixelHeight (node) {
+        var picky = node.classList.contains(pickySize), style;
+        if (picky) {
+            return parseInt(node.style.lineHeight.replace(/px/i, ''), 10);
+        } else {
+            return 'auto';
+        }
+    }
+
+    function setPicky (data) {
+        var pony = this;
+        var sel = pony.getSelection();
         if (!sel) {
             return;
         }
@@ -339,10 +365,10 @@
                 var poc, wrapper;
 
                 if (node.nodeName === '#text') {
-                    poc = isPixelOnlyChild(node);
-                    if (poc) { // update pixel wrapper
+                    poc = isPickyOnlyChild(node);
+                    if (poc) { // update picky wrapper
                         setStyle(node.parentNode);
-                    } else if (node.textContent.length) { // wrap in pixel tag
+                    } else if (node.textContent.length) { // wrap in picky tag
                         wrapper = document.createElement('span');
                         node.parentNode.replaceChild(wrapper, node);
                         wrapper.appendChild(node);
@@ -357,22 +383,45 @@
             });
         }
 
-        function isPixelOnlyChild (node) {
+        function isPickyOnlyChild (node) {
             var dad = node.parentNode;
             var children = Array.prototype.slice.call(dad.childNodes);
-            var poc = dad.classList.contains(pixelClass) && children.every(function (n) {
+            var poc = dad.classList.contains(pickyClass) && children.every(function (n) {
                 return n === node || (n.nodeName === '#text' && !n.textContent.length);
             });
             return poc;
         }
 
         function setStyle (node, reference) {
-            var size = value;
-            if (offset) {
+            var size = data.fontSize;
+            if (size === void 0) { // just use the computed size
+                size = getPixelSize(node);
+            }
+            if (data.fontSizeOffset) {
                 size += getPixelSize(reference || node);
             }
-            node.classList.add(pixelClass);
+            node.classList.add(pickySize, pickyClass);
             node.style.fontSize = size + 'px';
+
+            if (pony.options.pickyHeight !== true) {
+                return;
+            }
+
+            var height = data.lineHeight;
+            if (height !== void 0 && height !== 'auto') {
+                node.classList.remove(pickyAutoHeight);
+            } else {
+                if (height === 'auto' || !node.style.lineHeight) {
+                    node.classList.add(pickyAutoHeight);
+                }
+                if (node.classList.contains(pickyAutoHeight)) {
+                    height = size * pickyAutoHeightFactor;
+                }
+            }
+            if (height !== void 0) {
+                node.classList.add(pickyHeight, pickyClass);
+                node.style.lineHeight = height + 'px';
+            }
         }
     }
 
@@ -386,16 +435,21 @@
     };
     Editor.prototype.execSize = function (value) {
         if (this.options.pixels) {
-            setPixels.call(this, value);
+            setPicky.call(this, { fontSize: value });
         } else {
             exec('fontSize', false, value);
+        }
+    };
+    Editor.prototype.execHeight = function (value) {
+        if (this.options.pixels && this.options.pickyHeight) {
+            setPicky.call(this, { lineHeight: value });
         }
     };
     Editor.prototype.execSizeDecrease = function () {
         var value;
 
         if (this.options.pixels) {
-            setPixels.call(this, -1, true);
+            setPicky.call(this, { fontSize: -1, fontSizeOffset: true });
         } else {
             value = queries.fontSize.call(this) - 1;
             exec('fontSize', false, value);
@@ -405,7 +459,7 @@
         var value;
 
         if (this.options.pixels) {
-            setPixels.call(this, 1, true);
+            setPicky.call(this, { fontSize: 1, fontSizeOffset: true });
         } else {
             value = queries.fontSize.call(this) + 1;
             exec('fontSize', false, value);
@@ -439,6 +493,7 @@
     Editor.prototype.setType = command('Type');
     Editor.prototype.setColor = command('Color');
     Editor.prototype.setAlignment = command('Alignment');
+    Editor.prototype.setHeight = command('Height');
 
     // complex state queries
     var queries = {
@@ -446,6 +501,13 @@
             var value = this.options.pixels ?
                 getPixels.call(this) :
                 query('fontSize');
+
+            return parseInt(value, 10);
+        },
+        lineHeight: function () {
+            var value = this.options.pickyHeight ?
+                getHeight.call(this) :
+                0;
 
             return parseInt(value, 10);
         },
@@ -502,6 +564,7 @@
     Editor.prototype.reportType = report('fontName', 'type');
     Editor.prototype.reportColor = report('foreColor', 'color');
     Editor.prototype.reportAlignment = report('alignment', 'alignment');
+    Editor.prototype.reportAlignment = report('lineHeight', 'height', 'int');
     Editor.prototype.report = function () {
         var self = this;
         self.reportBold();
@@ -516,7 +579,8 @@
         fontSizes: [1, 2, 3, 4, 5, 6, 7],
         fontPixels: [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 72],
         fontTypes: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Palatino', 'Times New Roman', 'Trebuchet MS', 'Verdana'],
-        alignments: ['Left', 'Center', 'Right']
+        alignments: ['Left', 'Center', 'Right'],
+        lineHeights: [0.8, 0.9, 1, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3]
     };
 
     // lock down the meta options

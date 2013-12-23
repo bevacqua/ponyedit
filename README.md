@@ -76,11 +76,14 @@ Here are the default values.
 ```js
 {
   htmlWrap: true,
-  pixels: false
+  pixels: false,
+  pickyHeight: false
 }
 ```
 
-The pixels option defaults to `false`, using `<font size='{n}'>` tags just like native `contentEditable` does. Setting it to `true` results in `<span class='py-pixels-element' style='font-size: {n}px;'>` tags instead.
+The `pixels` option defaults to `false`, using `<font size='{n}'>` tags just like native `contentEditable` does. Setting it to `true` results in `<span class='py-pixels-element' style='font-size: {n}px;'>` tags instead.
+
+The `pickyHeight` option may be used in addition to the `pixels` option to set line heights relatively to the font size. Furthermore, `pickyHeight` enables the `.execHeight(px)`, and `.setHeight(px)` API.
 
 #### `.focus()`
 
@@ -117,6 +120,7 @@ These methods just execute commands on the content editable.
 - `.execType(value)` Sets the font name to `value` for the selection.
 - `.execColor(value)` Sets the fore color to `value` for the selection.
 - `.execAlignment(value)` Sets text alignment to `value` for the selection, `left`, `center`, or `right`.
+- `.execHeight(value)` Sets line height to `value` for the selection. Value may be `'auto'`
 
 #### `.set` State changes
 
@@ -130,6 +134,7 @@ These methods restore the latest selection, execute the appropriate `.exec` comm
 - `.setType(args, preserveSelection)`
 - `.setColor(args, preserveSelection)`
 - `.setAlignment(args, preserveSelection)`
+- `.setHeight(args, preserveSelection)`
 
 Note that, in order to be future proof, these methods' `args` should be an array of arguments to pass to the `.exec` command. As such, setting the size should be invoked like this:
 
@@ -149,6 +154,7 @@ These methods emit the state each particular property is in, or all of them at o
 - `.reportType()`
 - `.reportColor()`
 - `.reportAlignment()` normalized to report one of `left`, `center`, `right`, or `''`
+- `.reportHeight()`
 - `.report()`
 
 #### `.meta` Object
