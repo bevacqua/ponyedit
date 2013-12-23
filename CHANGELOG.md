@@ -1,3 +1,7 @@
+# v0.1.9 Random Chance
+
+- Added `pickyHeight` option, ability to set line heights
+
 # v0.1.8 Piglet
 
 - Fixed bug breaking paste event handler
