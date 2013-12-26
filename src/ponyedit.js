@@ -269,7 +269,6 @@
     var pickySize = 'py-picky-size';
     var pickyHeight = 'py-picky-height';
     var pickyAutoHeight = 'py-picky-height-auto';
-    var pickyAutoHeightFactor = 0.0625;
 
     function getFocusParent (pony) {
         var sel = pony.getSelection();
@@ -415,12 +414,12 @@
                     node.classList.add(pickyAutoHeight);
                 }
                 if (node.classList.contains(pickyAutoHeight)) {
-                    height = size * pickyAutoHeightFactor;
+                    height = size;
                 }
             }
             if (height !== void 0) {
                 node.classList.add(pickyHeight, pickyClass);
-                node.style.lineHeight = height;
+                node.style.lineHeight = height + 'px';
             }
         }
     }
@@ -581,7 +580,7 @@
         fontPixels: [8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 72],
         fontTypes: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier', 'Courier New', 'Georgia', 'Helvetica', 'Impact', 'Palatino', 'Times New Roman', 'Trebuchet MS', 'Verdana'],
         alignments: ['Left', 'Center', 'Right'],
-        lineHeights: ['auto', 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.8, 2.1, 2.5, 3]
+        lineHeights: ['auto', 6, 8, 9, 10, 11, 12, 14, 18, 24, 30, 36, 48, 60, 72]
     };
 
     // lock down the meta options
