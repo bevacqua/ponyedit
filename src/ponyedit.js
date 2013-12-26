@@ -309,7 +309,7 @@
         var auto = node.classList.contains(pickyAutoHeight);
         var picky = node.classList.contains(pickyHeight);
         if (picky && !auto) {
-            return parseInt(node.style.lineHeight.replace(/px/i, ''), 10);
+            return parseFloat(node.style.lineHeight, 10);
         }
         return 'auto';
     }
@@ -420,7 +420,7 @@
             }
             if (height !== void 0) {
                 node.classList.add(pickyHeight, pickyClass);
-                node.style.lineHeight = height + 'px';
+                node.style.lineHeight = height;
             }
         }
     }
