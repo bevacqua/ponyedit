@@ -174,3 +174,7 @@ Convenience shortcut to `ponyeditor.meta`, without an instance.
 Creates a `ponyeditor` for the element, and sets `contentEditable` on for that element.
 
   [1]: http://i.imgur.com/NYNlIWg.png
+
+# License
+
+MIT
