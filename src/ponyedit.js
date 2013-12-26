@@ -564,7 +564,7 @@
     Editor.prototype.reportType = report('fontName', 'type');
     Editor.prototype.reportColor = report('foreColor', 'color');
     Editor.prototype.reportAlignment = report('alignment', 'alignment');
-    Editor.prototype.reportAlignment = report('lineHeight', 'height');
+    Editor.prototype.reportHeight = report('lineHeight', 'height');
     Editor.prototype.report = function () {
         var self = this;
         self.reportBold();
@@ -573,6 +573,7 @@
         self.reportType();
         self.reportColor();
         self.reportAlignment();
+        self.reportHeight();
     };
 
     Editor.prototype.meta = {
