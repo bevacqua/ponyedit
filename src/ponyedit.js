@@ -269,7 +269,7 @@
     var pickySize = 'py-picky-size';
     var pickyHeight = 'py-picky-height';
     var pickyAutoHeight = 'py-picky-height-auto';
-    var pickyAutoHeightFactor = 1.5;
+    var pickyAutoHeightFactor = 0.0625;
 
     function getFocusParent (pony) {
         var sel = pony.getSelection();
