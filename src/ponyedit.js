@@ -414,7 +414,7 @@
                     node.classList.add(pickyAutoHeight);
                 }
                 if (node.classList.contains(pickyAutoHeight)) {
-                    height = size;
+                    height = size > 32 ? size : size * 1.2;
                 }
             }
             if (height !== void 0) {
