@@ -337,7 +337,7 @@
         cleanup(child.parentNode);
         recurse(children);
 
-        range.setStart(startNode);
+        range.setStart(startNode, null);
         range.setEnd(endNode, endNode.nodeName === '#text' ?
             endNode.textContent.length :
             endNode.childNodes.length
