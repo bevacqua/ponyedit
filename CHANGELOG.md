@@ -1,3 +1,7 @@
+# v0.1.17 Tiny Fox
+
+- Fixed a bug with text range selection in Ubuntu Chrome
+
 # v0.1.9 Random Chance
 
 - Added `pickyHeight` option, ability to set line heights
